@@ -46,7 +46,7 @@
         <input class="form-control" id="attachment" name="attachment" type="file">
       </div>
       <div class="mb-3 text-center">
-        <button type="submit" class="btn">Enviar Solicitud</button>
+        <button type="submit" class="btn btn__style">Enviar Solicitud</button>
       </div>
     </form>
   </div>
