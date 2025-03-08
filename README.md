@@ -34,9 +34,10 @@ Este sistema simplifica la creación de tarjetas en Trello, especialmente para u
    ```  
 2. Crear un archivo `.env` en la raíz del proyecto con las **API Keys de Trello**:  
    ```env
-   TRELLO_API_KEY=your_api_key
-   TRELLO_TOKEN=your_trello_token
-   TRELLO_BOARD_ID=your_board_id
+   TRELLO_KEY=tu_key
+   TRELLO_TOKEN=tu_token
+   TRELLO_ID_LIST=id_columna_donde_crear_ticket
+   LOG_FILE_PATH=logs/error.log
    ```  
 3. Subir el proyecto a un servidor compatible con PHP.  
 4. Acceder al formulario desde el navegador y empezar a gestionar solicitudes.  
