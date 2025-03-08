@@ -10,44 +10,45 @@
 </head>
 
 <body>
-  <div class="container-lg">
-    <div class="row">
-      <div class="d-flex align-items-center align-content-between flex-column mt-5">
-        <img src="../../Assets/Images/shiro.png" class="img-fluid" alt="Shiro Company" />
-        <h1 class="text-center">Formulario de Solicitud</h1>
-      </div>
-      <form method="POST" enctype="multipart/form-data" action="/submit-request">
-        <div class="row mb-3">
-          <div class="col-lg-6"><label for="name">Título:</label>
-            <input required class="form-control" type="text" placeholder="Default input" aria-label="Título" id="title" name="title">
-          </div>
-          <div class="col-lg-3"><label for="urgency">Urgencia:</label>
-            <select required class="form-select" name="urgency" aria-label="Default select example">
-              <option disabled>Selecciona el nivel de urgencia:</option>
-              <option value="AYER">Ayer</option>
-              <option value="Urgente">Urgente</option>
-              <option value="Medio">Medio</option>
-              <option selected value="Baja">Baja</option>
-            </select>
-          </div>
-          <div class="col-lg-3">
-            <label for="startDate">Fecha de entrega:</label>
-            <input id="startDate" class="form-control" type="date" name="due_date" />
-          </div>
-          <div class="mb-3">
-            <label for="description">Descripción:</label>
-            <textarea required class="form-control" id="description" name="description" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="formFile" class="form-label">Archivo adjunto (opcional):</label>
-            <input class="form-control" id="attachment" name="attachment" type="file">
-          </div>
-          <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Primary</button>
-          </div>
-        </div>
-      </form>
+  <div class="container">
+    <div class="text-center mb-4">
+      <img src="../../Assets/Images/shiro.png" class="img-fluid" alt="Shiro Company" width="180" />
+      <h1>Formulario de Solicitud</h1>
     </div>
+
+    <form method="POST" enctype="multipart/form-data" action="/submit-request">
+      <div class="mb-3">
+        <label for="title">Título:</label>
+        <input required class="form-control" type="text" placeholder="Ingrese un título" id="title" name="title">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="urgency">Urgencia:</label>
+          <select required class="form-select" name="urgency">
+            <option disabled>Selecciona el nivel de urgencia:</option>
+            <option value="AYER">Ayer</option>
+            <option value="Urgente">Urgente</option>
+            <option value="Medio">Medio</option>
+            <option selected value="Baja">Baja</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="startDate">Fecha de entrega:</label>
+          <input id="startDate" class="form-control" type="date" name="due_date">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="description">Descripción:</label>
+        <textarea required class="form-control" id="description" name="description" rows="3" placeholder="Describe tu solicitud"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="attachment" class="form-label">Archivo adjunto (opcional):</label>
+        <input class="form-control" id="attachment" name="attachment" type="file">
+      </div>
+      <div class="mb-3 text-center">
+        <button type="submit" class="btn">Enviar Solicitud</button>
+      </div>
+    </form>
   </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
