@@ -26,12 +26,11 @@ class TrelloRequest
     $url = "https://api.trello.com/1/cards";
     $label = $this->getLabelByUrgency($urgency);
 
-    // Asegúrate de que la etiqueta sea válida antes de proceder
     if (!$label) {
       throw new \Exception('Etiqueta de urgencia inválida.');
     }
 
-    // Prepara los datos de la tarjeta para la solicitud
+    // Datos para la tarjeta
     $data = [
       'key' => $this->apiKey,
       'token' => $this->token,
@@ -39,26 +38,65 @@ class TrelloRequest
       'name' => $title,
       'desc' => $description,
       'due' => $dueDate,
-      'idLabels' => [$label],  // Asegúrate de que 'idLabels' sea un array con un solo ID
+      'idLabels' => [$label]
     ];
 
-    // Agregar URL de archivo adjunto si existe
-    if ($attachmentUrl) {
-      $baseUrl = "http://formrym.shirocompany.com/App/"; // Tu base URL
-      $data['urlSource'] = $baseUrl . $attachmentUrl;  // Enviar la URL del archivo
-    }
-
-    // Asegúrate de que los datos estén en el formato adecuado para una solicitud POST
-    $postData = http_build_query($data);  // Usamos http_build_query para enviar datos de formulario URL-encoded
-
-    // Realizar la solicitud a la API de Trello
+    // Crear tarjeta en Trello
+    $postData = http_build_query($data);
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);  // Enviar los datos correctamente formateados
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
-      'Content-Type: application/x-www-form-urlencoded',  // Especificamos que los datos están en formato URL-encoded
+      'Content-Type: application/x-www-form-urlencoded',
+    ]);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // Verificar si la tarjeta se creó correctamente
+    if ($httpCode !== 200) {
+      throw new \Exception("Error al crear la tarjeta en Trello: $response");
+    }
+
+    // Decodificar la respuesta JSON
+    $cardData = json_decode($response, true);
+    if (!isset($cardData['id'])) {
+      throw new \Exception("No se pudo obtener el ID de la tarjeta.");
+    }
+
+    $cardId = $cardData['id'];
+
+    // Si hay un archivo adjunto, subirlo
+    if ($attachmentUrl) {
+      $this->attachFileToCard($cardId, $attachmentUrl);
+    }
+
+    return $cardData;
+  }
+
+  private function attachFileToCard($cardId, $attachmentUrl)
+  {
+    // Asegurar que la URL sea válida y sin doble slash
+    $attachmentUrl = rtrim("http://formrym.shirocompany.com/App/", '/') . '/' . ltrim($attachmentUrl, '/');
+
+    $url = "https://api.trello.com/1/cards/$cardId/attachments";
+    $data = [
+      'key' => $this->apiKey,
+      'token' => $this->token,
+      'url' => $attachmentUrl
+    ];
+
+    $postData = http_build_query($data);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+      'Content-Type: application/x-www-form-urlencoded',
     ]);
 
     $response = curl_exec($ch);
@@ -66,11 +104,10 @@ class TrelloRequest
     curl_close($ch);
 
     if ($httpCode !== 200) {
-      throw new \Exception("Error al crear la tarjeta en Trello: $response");
+      throw new \Exception("Error al adjuntar archivo en Trello: $response");
     }
-
-    return $response;
   }
+
 
   private function getLabelByUrgency($urgency)
   {

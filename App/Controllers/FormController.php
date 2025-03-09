@@ -56,20 +56,17 @@ class FormController
 
   private function uploadFile($file)
   {
-    // Carpeta donde se guardarán los archivos
     $uploadDir = __DIR__ . '/../uploads/';
     if (!is_dir($uploadDir)) {
       mkdir($uploadDir, 0777, true);
     }
 
-    // Generar un nombre único para el archivo
-    $fileName = uniqid() . '-' . basename($file['name']);
+    // Limpiar el nombre del archivo y evitar espacios en blanco
+    $fileName = uniqid() . '-' . str_replace(' ', '_', basename($file['name']));
     $filePath = $uploadDir . $fileName;
 
-    // Mover el archivo a la carpeta de subida
     if (move_uploaded_file($file['tmp_name'], $filePath)) {
-      // Retornar la URL del archivo en el servidor
-      return '/uploads/' . $fileName;
+      return 'uploads/' . $fileName; // Devolver sin doble slash
     }
 
     return null;

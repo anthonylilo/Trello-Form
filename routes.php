@@ -10,11 +10,15 @@ function handleRequest($url)
   $controller = new FormController($model);
 
   if ($url === '/') {
-    $controller->index();
+    $title = "Formulario de Solicitud | Shiro Company";
+    $pageType = "form";
+    include __DIR__ . '/App/Views/body.php';
   } elseif ($url === '/submit-request') {
     $controller->handleFormSubmission();
   } elseif ($url === '/success') {
-    require __DIR__ . '/App/Views/success.php';
+    $title = "Solicitud Enviada | Shiro Company";
+    $pageType = "success";
+    include __DIR__ . '/App/Views/body.php';
   } else {
     header("Location: /");
     exit();
