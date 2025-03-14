@@ -89,7 +89,19 @@ document.addEventListener('DOMContentLoaded', function () {
       attachment.classList.remove('is-invalid');
     }
 
-    if (!isValid) {
+    if (isValid) {
+      // Mostrar la alerta de SweetAlert2
+      Swal.fire({
+        title: 'Creando solicitud',
+        text: 'Por favor aguarde. No refresque el navegador para evitar perder la solicitud.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        }
+      });
+    } else {
       event.preventDefault();
     }
   });

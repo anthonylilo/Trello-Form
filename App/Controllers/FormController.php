@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\TrelloRequest;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
 
 class FormController
 {
@@ -11,6 +14,8 @@ class FormController
   public function __construct(TrelloRequest $model)
   {
     $this->model = $model;
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+    $dotenv->load();
   }
 
   public function index()
@@ -40,6 +45,8 @@ class FormController
       try {
         $result = $this->model->createCard($title, $description, $dueDate, $attachment, $urgency);
         if ($result) {
+          $this->sendNotificationEmail($title, $description, $dueDate, $urgency);
+
           header("Location: /success");
         } else {
           echo "Error al crear la tarjeta en Trello.";
@@ -71,9 +78,43 @@ class FormController
     $filePath = $uploadDir . $fileName;
 
     if (move_uploaded_file($file['tmp_name'], $filePath)) {
-      return 'uploads/' . $fileName; // Devolver sin doble slash
+      return 'uploads/' . $fileName;
     }
 
     return null;
+  }
+
+  private function sendNotificationEmail($title, $description, $dueDate, $urgency)
+  {
+    $mail = new PHPMailer(true);
+
+    try {
+      // Configuración del servidor SMTP
+      $mail->isSMTP();
+      $mail->Host = $_ENV['SMTP_HOST'];
+      $mail->SMTPAuth = true;
+      $mail->Username = $_ENV['SMTP_USER'];
+      $mail->Password = $_ENV['SMTP_PASS'];
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+      $mail->Port = $_ENV['SMTP_PORT'];
+
+      // Remitente y destinatario
+      $mail->setFrom($_ENV['SMTP_FROM'], 'Shiro Company');
+      $mail->addAddress($_ENV['SMTP_TO']);
+
+      // Contenido del correo
+      $mail->isHTML(true);
+      $mail->Subject = 'Nueva solicitud creada';
+      $mail->Body    = "<p>Se ha creado una nueva solicitud con los siguientes detalles:</p>
+                        <p><strong>Título:</strong> $title</p>
+                        <p><strong>Descripción:</strong> $description</p>
+                        <p><strong>Fecha de entrega:</strong> $dueDate</p>
+                        <p><strong>Urgencia:</strong> $urgency</p>";
+
+      // Enviar el correo
+      $mail->send();
+    } catch (Exception $e) {
+      error_log("Error al enviar el correo: {$mail->ErrorInfo}");
+    }
   }
 }
