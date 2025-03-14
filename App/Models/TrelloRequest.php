@@ -112,7 +112,7 @@ class TrelloRequest
   private function getLabelByUrgency($urgency)
   {
     $labels = [
-      'AYER' => '6743ce23b6d598df2c2c4cbb',  // ID de la etiqueta 'AYER'
+      'Inmediata' => '6743ce23b6d598df2c2c4cbb',  // ID de la etiqueta 'Inmediata'
       'Urgente' => '6744988be3de6cf775117bef', // ID de la etiqueta 'Urgente'
       'Medio' => '674498997c53ce950ae3660b',  // ID de la etiqueta 'Medio'
       'Baja' => '6743ce23b6d598df2c2c4cc4',    // ID de la etiqueta 'Baja'

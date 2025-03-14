@@ -1,8 +1,9 @@
 body {
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(135deg, #1e1e1e, #c85e00);
   color: #ffffff;
   font-family: "Poppins", sans-serif;
-  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -11,6 +12,7 @@ body {
 .container {
   background: rgba(255, 255, 255, 0.1);
   padding: 30px;
+  margin: 5%;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
@@ -25,7 +27,7 @@ h1 {
 
 .form-control,
 .form-select {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.4);
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -36,6 +38,10 @@ h1 {
   background: rgba(255, 255, 255, 0.3);
   outline: none;
   box-shadow: 0 0 8px #00ff85;
+}
+
+.form-text{
+  color: #f5f2f2;
 }
 
 .btn__style {
@@ -80,4 +86,29 @@ h1 {
 
 .success-text {
   font-size: 1.2rem;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+  color: #ffff;
+  font-size: 1em;
+  margin-top: 0.25rem;
+  background-color: rgba(220, 53, 69, 0.4);
+  border: 2px solid #dc3545;
+  width: 100%;
+  text-align: center;
+  border-radius: 5em;
+}
+
+footer {
+  background-color: #212121;
+  color: #ffffff;
+  padding: 1rem 0;
+  text-align: center;
+  width: 100%;
+  margin-top: auto;
 }

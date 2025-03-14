@@ -56,6 +56,11 @@ class FormController
 
   private function uploadFile($file)
   {
+    // Validar el tamaño del archivo
+    if ($file['size'] > 50000000) { // 50 MB en bytes
+      throw new \Exception("El archivo adjunto es demasiado grande.");
+    }
+
     $uploadDir = __DIR__ . '/../uploads/';
     if (!is_dir($uploadDir)) {
       mkdir($uploadDir, 0777, true);
